@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GenDiversity — About</title>
+  
+  <!-- Load Three.js for 3D Background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Load Chart.js for the Graph -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      var(--bg-main): transparent; 
+      --bg-card: rgba(15, 23, 42, 0.4);
+      --bg-card-hover: rgba(30, 41, 59, 0.6);
+      --border: rgba(255, 255, 255, 0.1);
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --accent: #3B82F6;
+      --accent-green: #10B981;
+      --accent-orange: #F59E0B;
+      --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: #020617; 
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── 3D Canvas Background ── */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ── Navbar ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 4rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      color: var(--accent);
+      filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8));
+    }
+
+    /* ── Navigation Buttons ── */
+    .nav-btns { display: flex; gap: 12px; }
+    .btn-nav { 
+      padding: 8px 16px; 
+      border-radius: 6px; 
+      font-size: 14px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      text-decoration: none; 
+      transition: 0.2s; 
+      letter-spacing: 0.5px;
+    }
+    .btn-outline { 
+      color: var(--text-main); 
+      border: 1px solid var(--border); 
+      background: rgba(255,255,255,0.05); 
+      backdrop-filter: blur(5px);
+    }
+    .btn-outline:hover { 
+      background: rgba(255,255,255,0.15); 
+      border-color: rgba(255,255,255,0.3); 
+    }
+    .btn-solid { 
+      background: var(--accent); 
+      color: #fff; 
+      border: none; 
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); 
+    }
+    .btn-solid:hover { 
+      background: #2563EB; 
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); 
+    }
+
+    /* ── Hero Section ── */
+    .hero {
+      position: relative;
+      padding: 12rem 4rem 6rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(to bottom, rgba(2,6,23,0.2) 0%, rgba(2,6,23,0.8) 100%);
+    }
+    .hero-content {
+      max-width: 800px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      font-weight: 500;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+      letter-spacing: -1.5px;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    /* ── Main Split Content ── */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      padding: 6rem 4rem;
+      max-width: 1600px;
+      margin: 0 auto;
+      background: rgba(2, 6, 23, 0.6);
+      backdrop-filter: blur(4px);
+    }
+    @media (max-width: 1024px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Left Column (About & Stats) ── */
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 5rem;
+    }
+    .about-text-wrap {
+      display: flex;
+      gap: 2rem;
+    }
+    .about-badge {
+      border: 1px solid var(--border);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      height: fit-content;
+      white-space: nowrap;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+    }
+    .about-desc {
+      font-size: 1.4rem;
+      line-height: 1.5;
+      font-weight: 400;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem 1.5rem;
+      transition: background 0.3s, transform 0.3s;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    .stat-card:hover {
+      background: var(--bg-card-hover);
+      transform: translateY(-5px);
+    }
+    .stat-card h2 {
+      font-size: 3rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      letter-spacing: -1px;
+      color: #fff;
+    }
+    .stat-card h3 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      line-height: 1.3;
+    }
+    .stat-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Right Column (Graph & FAQs) ── */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+    
+    /* Replaces the image placeholder with a glass graph panel */
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #fff;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+    .chart-container {
+      position: relative;
+      height: 250px;
+      width: 100%;
+    }
+    .social-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .s-stat-num {
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .s-stat-lbl {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .faq-container {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 0 1.5rem;
+    }
+    details {
+      border-bottom: 1px solid var(--border);
+    }
+    details:last-child {
+      border-bottom: none;
+    }
+    summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      list-style: none;
+      color: #fff;
+    }
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    .icon-plus {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      line-height: 1;
+      color: var(--text-muted);
+      transition: 0.3s;
+    }
+    details[open] summary .icon-plus {
+      background: var(--text-main);
+      color: #000;
+      border-color: var(--text-main);
+      transform: rotate(45deg);
+    }
+    .faq-content {
+      padding-bottom: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 3D Canvas Background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Navbar with Brand and Authentication Links -->
+  <nav>
+    <div class="brand">
+      <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M5 3c2.5 2.5 11 2.5 13 6.5S7 13 5 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M19 3C16.5 5.5 8 5.5 6 9.5s11 3.5 13 7.5" stroke="currentColor" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      GenDiversity
+    </div>
+    <div class="nav-btns">
+      <a href="simulator.html" class="btn-nav btn-outline">Sign In</a>
+      <a href="simulator.html?screen=signup" class="btn-nav btn-solid">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Harnessing scientific knowledge</h1>
+      <p>Our aim is to bring forth scientific breakthroughs and cutting-edge technologies, crafting intricate and efficient tools that enhance genetic diversity analysis.</p>
+    </div>
+  </section>
+
+  <!-- Main Split Layout -->
+  <main class="content-grid">
+    
+    <!-- Left Column -->
+    <div class="left-col">
+      <div class="about-text-wrap">
+        <div class="about-badge">About</div>
+        <div class="about-desc">
+          Genetic diversity, a vital indicator of population health, plays a critical role in generating essential adaptations necessary for life and optimal evolutionary functioning.
+        </div>
+      </div>
+
+      <div class="stats-container">
+        <!-- Card 1 -->
+        <div class="stat-card">
+          <h2>150+</h2>
+          <h3>The laboratories initiated by our group</h3>
+          <p>Our group's laboratories are innovative hubs for cutting-edge research and genetic experimentation.</p>
+        </div>
+        <!-- Card 2 -->
+        <div class="stat-card">
+          <h2>50+</h2>
+          <h3>Industrial tracking strains</h3>
+          <p>The collection is continuously being expanded, with ongoing efforts to enhance its predictive scope.</p>
+        </div>
+        <!-- Card 3 -->
+        <div class="stat-card">
+          <h2>100+</h2>
+          <h3>Experts in their respective domains</h3>
+          <p>Our domain experts actively contribute through research, algorithmic modeling, and publication.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-col">
+      
+      <!-- NEW: Graph and Social Data Panel -->
+      <div class="glass-panel">
+        <h3 class="panel-title">Population Viability vs. Inbreeding Risk (Simulated)</h3>
+        
+        <div class="chart-container">
+          <canvas id="riskChart"></canvas>
+        </div>
+
+        <!-- Social / Community Data -->
+        <div class="social-stats">
+          <div>
+            <div class="s-stat-num" style="color: var(--accent);">12k+</div>
+            <div class="s-stat-lbl">Simulations Run</div>
+          </div>
+          <div>
+            <div class="s-stat-num" style="color: var(--accent-green);">500+</div>
+            <div class="s-stat-lbl">Conservationists</div>
+          </div>
+          <div>
+            <div class="s-stat-num" style="color: var(--accent-orange);">99.9%</div>
+            <div class="s-stat-lbl">Predictive Uptime</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clean FAQ Accordion -->
+      <div class="faq-container">
+        
+        <details open>
+          <summary>
+            What does your platform offer? 
+            <span class="icon-plus">+</span>
+          </summary>
+          <div class="faq-content">
+            We provide advanced tools spanning genetic drift simulation, precision diagnostics, and inbreeding risk modeling. Our goal is to revolutionize conservation by advancing analytics, ultimately preserving population viability.
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            How do you ensure data quality and safety?
+            <span class="icon-plus">+</span>
+          </summary>
+          <div class="faq-content">
+            All genetic datasets are processed using state-of-the-art encryption protocols. Our stochastic simulation algorithms undergo rigorous peer review and validation against historical fossil and genomic records.
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            Are you navigating regulatory industry standards?
+            <span class="icon-plus">+</span>
+          </summary>
+          <div class="faq-content">
+            Yes, our estimators fully comply with international bioethics guidelines and data privacy regulations, ensuring secure and responsible use of genomic sequence data.
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            Who are you collaborating with?
+            <span class="icon-plus">+</span>
+          </summary>
+          <div class="faq-content">
+            We partner with leading universities, conservation agencies, and paleogenetics laboratories worldwide to continuously refine our behavioral and environmental predictors.
+          </div>
+        </details>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Scripts -->
+  <script>
+    /* =========================================
+       1. Chart.js Initialization (Risk Graph)
+       ========================================= */
+    document.addEventListener("DOMContentLoaded", function() {
+      const ctx = document.getElementById('riskChart').getContext('2d');
+      
+      // Gradient for the blue line
+      let gradientBlue = ctx.createLinearGradient(0, 0, 0, 250);
+      gradientBlue.addColorStop(0, 'rgba(59, 130, 246, 0.5)');
+      gradientBlue.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Gen 1', 'Gen 10', 'Gen 20', 'Gen 30', 'Gen 40', 'Gen 50', 'Gen 60'],
+          datasets: [
+            {
+              label: 'Population Viability (%)',
+              data: [95, 88, 80, 72, 60, 45, 20],
+              borderColor: '#3B82F6',
+              backgroundColor: gradientBlue,
+              borderWidth: 2,
+              tension: 0.4,
+              fill: true,
+              pointRadius: 0
+            },
+            {
+              label: 'Inbreeding Coefficient (F)',
+              data: [5, 12, 25, 40, 55, 75, 90],
+              borderColor: '#EF4444', // Red warning line
+              borderWidth: 2,
+              borderDash: [5, 5],
+              tension: 0.4,
+              fill: false,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { 
+              display: true, 
+              labels: { color: '#94A3B8', font: { size: 10, family: 'sans-serif' }, boxWidth: 12 } 
+            },
+            tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', titleColor: '#fff', bodyColor: '#94A3B8' }
+          },
+          scales: {
+            x: { 
+              grid: { color: 'rgba(255,255,255,0.05)' }, 
+              ticks: { color: '#64748B', font: { size: 10 } } 
+            },
+            y: { 
+              grid: { color: 'rgba(255,255,255,0.05)' }, 
+              ticks: { color: '#64748B', font: { size: 10 } },
+              min: 0, max: 100
+            }
+          }
+        }
+      });
+    });
+
+    /* =========================================
+       2. Three.js 3D Background
+       ========================================= */
+    const canvas = document.getElementById('bg-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x020617, 0.002);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 150);
+
+    const dnaGroup = new THREE.Group();
+    scene.add(dnaGroup);
+
+    const blueMaterial = new THREE.MeshBasicMaterial({ color: 0x3B82F6 });
+    const cyanMaterial = new THREE.MeshBasicMaterial({ color: 0x06b6d4 });
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.15 });
+
+    const particleCount = 180;
+    const heightLimit = 300;
+    const radius = 25;
+    const turns = 5;
+
+    for (let i = 0; i < particleCount; i++) {
+      const y = (i / particleCount) * heightLimit - (heightLimit / 2);
+      const angle = (i / particleCount) * Math.PI * 2 * turns;
+
+      const ax = Math.cos(angle) * radius;
+      const az = Math.sin(angle) * radius;
+      
+      const bx = Math.cos(angle + Math.PI) * radius;
+      const bz = Math.sin(angle + Math.PI) * radius;
+
+      const sphereGeo = new THREE.SphereGeometry(1.5, 16, 16);
+      
+      const meshA = new THREE.Mesh(sphereGeo, blueMaterial);
+      meshA.position.set(ax, y, az);
+      dnaGroup.add(meshA);
+
+      const meshB = new THREE.Mesh(sphereGeo, cyanMaterial);
+      meshB.position.set(bx, y, bz);
+      dnaGroup.add(meshB);
+
+      if (i % 2 === 0) { 
+        const points = [new THREE.Vector3(ax, y, az), new THREE.Vector3(bx, y, bz)];
+        const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+        const line = new THREE.Line(lineGeo, lineMaterial);
+        dnaGroup.add(line);
+      }
+    }
+
+    dnaGroup.rotation.z = Math.PI / 8;
+    dnaGroup.position.x = 40; 
+
+    // Ambient floating particles
+    const bgParticlesGeo = new THREE.BufferGeometry();
+    const bgParticleCount = 400;
+    const posArray = new Float32Array(bgParticleCount * 3);
+    for(let i=0; i < bgParticleCount * 3; i++) posArray[i] = (Math.random() - 0.5) * 500;
+    bgParticlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const bgParticleMat = new THREE.PointsMaterial({ size: 1.5, color: 0x3B82F6, transparent: true, opacity: 0.4 });
+    const bgParticles = new THREE.Points(bgParticlesGeo, bgParticleMat);
+    scene.add(bgParticles);
+
+    // Animation Loop
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = clock.getElapsedTime();
+      dnaGroup.rotation.y = time * 0.2;
+      dnaGroup.position.y = Math.sin(time * 0.5) * 5; 
+      bgParticles.rotation.y = time * 0.05;
+      bgParticles.rotation.x = time * 0.02;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
