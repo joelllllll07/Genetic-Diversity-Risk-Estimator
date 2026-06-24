@@ -65,7 +65,7 @@ Supporting legacy authentication artifacts:
 6. Use **Reset to defaults** to restore baseline settings.
 
 ## Screenshots
-> Add screenshots here before publishing to recruiters.
+> Placeholder slots are intentionally included for portfolio readiness; replace these with real captures before sharing with recruiters.
 
 - `docs/screenshots/landing-page.png` *(placeholder)*
 - `docs/screenshots/simulator-controls.png` *(placeholder)*

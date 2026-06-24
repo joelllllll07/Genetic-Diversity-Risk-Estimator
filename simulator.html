@@ -203,7 +203,7 @@
     </div>
     <p class="brand-tag">Genetic Diversity Risk Estimator</p>
     <div class="demo-banner" id="demo-auth-banner">
-      <strong>Demo Mode:</strong> If cloud authentication is unavailable, this page falls back to localStorage for demo purposes. localStorage authentication is not secure and should not be used for production systems.
+      <strong>Demo Mode:</strong> If cloud authentication is not configured, this page falls back to localStorage for demo purposes. localStorage authentication is not secure and should not be used for production systems.
     </div>
 
     <!-- LOGIN -->
@@ -919,7 +919,7 @@ function binomial(n, p) {
   return Math.max(0, Math.min(n, Math.round(n*p + Math.sqrt(n*p*(1-p))*z)));
 }
 function simulate(N,G,p0,mu,s,intGen,intN,intP) {
-  // Wright–Fisher style simulation: iterate allele sampling over G generations.
+  // Wright-Fisher style simulation: iterate allele sampling over G generations.
   const useInt=intGen>0&&intN>0;
   const freqs=[p0],Fvals=[0];
   let p=p0,F=0;
