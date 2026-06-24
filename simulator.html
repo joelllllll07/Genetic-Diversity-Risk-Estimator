@@ -170,6 +170,18 @@
     .config-banner.show { display: block; }
     .config-banner strong { font-weight: 600; }
     .config-banner code { font-family: monospace; background: rgba(0,0,0,0.08); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+    .demo-banner {
+      background: #FAEEDA;
+      border: 1px solid #EF9F27;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 1rem;
+      font-size: 13px;
+      color: #412402;
+      display: none;
+      line-height: 1.45;
+    }
+    .demo-banner.show { display: block; }
   </style>
 </head>
 <body>
@@ -190,6 +202,9 @@
       <span class="brand-name">GenDiversity</span>
     </div>
     <p class="brand-tag">Genetic Diversity Risk Estimator</p>
+    <div class="demo-banner" id="demo-auth-banner">
+      <strong>Demo Mode:</strong> If cloud authentication is not configured, this page falls back to localStorage for demo purposes. localStorage authentication is not secure and should not be used for production systems.
+    </div>
 
     <!-- LOGIN -->
     <div id="login-card" class="auth-card">
@@ -271,6 +286,9 @@
   <div class="page">
     <div class="config-banner" id="config-banner">
       <strong>Setup needed:</strong> Open <code>index.html</code> in a text editor and replace <code>PASTE_YOUR_PROJECT_URL_HERE</code> and <code>PASTE_YOUR_ANON_KEY_HERE</code> with your Supabase keys.
+    </div>
+    <div class="demo-banner" id="demo-app-banner">
+      <strong>Demo Mode:</strong> You are using localStorage-based authentication for demonstration only. This mechanism is intentionally simple and not secure.
     </div>
 
     <div class="page-header">
@@ -798,7 +816,10 @@ function enterApp(name, email) {
   document.getElementById('nav-username').textContent = name || email;
   document.getElementById('auth-wrap').style.display = 'none';
   document.getElementById('app-wrap').style.display = 'block';
-  if (!keysReady) document.getElementById('config-banner').classList.add('show');
+  if (!keysReady) {
+    document.getElementById('config-banner').classList.add('show');
+    document.getElementById('demo-app-banner').classList.add('show');
+  }
 }
 
 document.getElementById('login-btn').dataset.label = 'Sign in';
@@ -864,6 +885,9 @@ async function doLogout() {
 /* ── URL Parameter Guard for Signup Link ── */
 window.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
+  if (!keysReady) {
+    document.getElementById('demo-auth-banner').classList.add('show');
+  }
   if (params.get('screen') === 'signup') {
     // This now works on simulator.html
     showCard('signup-card');
@@ -895,15 +919,21 @@ function binomial(n, p) {
   return Math.max(0, Math.min(n, Math.round(n*p + Math.sqrt(n*p*(1-p))*z)));
 }
 function simulate(N,G,p0,mu,s,intGen,intN,intP) {
+  // Wright-Fisher style simulation: iterate allele sampling over G generations.
   const useInt=intGen>0&&intN>0;
   const freqs=[p0],Fvals=[0];
   let p=p0,F=0;
   for(let g=1;g<=G;g++){
+    // Migration intervention logic: mix resident and migrant allele pools at the chosen generation.
     if(useInt&&g===intGen){const tot=N+intN;p=(p*N+intP*intN)/tot;F=F*(N/tot);}
+    // Selection calculation: update allele frequency using relative genotype fitness terms.
     if(s!==0){const q=1-p,wB=p*p*(1+s)+2*p*q*(1+s/2)+q*q;p=(p*p*(1+s)+p*q*(1+s/2))/wB;}
+    // Mutation calculation: apply symmetric allele switching at rate mu.
     p=p*(1-mu)+(1-p)*mu;
+    // Genetic drift calculation: sample 2N allele copies from a binomial distribution.
     const copies=binomial(2*N,p);
     p=Math.max(0,Math.min(1,copies/(2*N)));
+    // Inbreeding coefficient (F): track expected accumulation under finite population size.
     F=Math.max(0,Math.min(1,1-Math.pow(1-1/(2*N),g)));
     freqs.push(p);Fvals.push(F);
     if(p<=0||p>=1){for(let r=g+1;r<=G;r++){freqs.push(p);Fvals.push(Math.min(1,1-Math.pow(1-1/(2*N),r)));}break;}

@@ -201,10 +201,10 @@
       transform: translateY(-5px);
     }
     .stat-card h2 {
-      font-size: 3rem;
+      font-size: 1.4rem;
       font-weight: 400;
       margin-bottom: 1rem;
-      letter-spacing: -1px;
+      letter-spacing: -0.2px;
       color: #fff;
     }
     .stat-card h3 {
@@ -319,6 +319,47 @@
       color: var(--text-muted);
       line-height: 1.6;
     }
+
+    .info-section {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 4rem 2rem;
+    }
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      padding: 2rem;
+    }
+    .info-card h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.3px;
+    }
+    .info-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+      color: var(--text-muted);
+    }
+    .info-list li {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 0.8rem 0.9rem;
+    }
+    .limitations {
+      max-width: 1600px;
+      margin: 0 auto 4rem;
+      padding: 0 4rem;
+    }
+    .limitations .info-card p {
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
   </style>
 </head>
 <body>
@@ -344,8 +385,8 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-content">
-      <h1>Harnessing scientific knowledge</h1>
-      <p>Our aim is to bring forth scientific breakthroughs and cutting-edge technologies, crafting intricate and efficient tools that enhance genetic diversity analysis.</p>
+      <h1>Explore population genetics with Wright–Fisher simulation</h1>
+      <p>GenDiversity is an educational Wright–Fisher model simulator for exploring genetic drift, allele frequency change, and inbreeding risk across generations.</p>
     </div>
   </section>
 
@@ -357,28 +398,34 @@
       <div class="about-text-wrap">
         <div class="about-badge">About</div>
         <div class="about-desc">
-          Genetic diversity, a vital indicator of population health, plays a critical role in generating essential adaptations necessary for life and optimal evolutionary functioning.
+          This project is a conservation genetics learning application designed to help students and recruiters understand how stochastic population processes can affect long-term diversity.
         </div>
       </div>
 
       <div class="stats-container">
         <!-- Card 1 -->
         <div class="stat-card">
-          <h2>150+</h2>
-          <h3>The laboratories initiated by our group</h3>
-          <p>Our group's laboratories are innovative hubs for cutting-edge research and genetic experimentation.</p>
+          <h2>Wright–Fisher Model</h2>
+          <h3>Discrete-generation population model</h3>
+          <p>Simulates allele sampling across generations in a finite population.</p>
         </div>
         <!-- Card 2 -->
         <div class="stat-card">
-          <h2>50+</h2>
-          <h3>Industrial tracking strains</h3>
-          <p>The collection is continuously being expanded, with ongoing efforts to enhance its predictive scope.</p>
+          <h2>Interactive Simulation</h2>
+          <h3>Parameter controls for exploration</h3>
+          <p>Adjust population size, mutation, selection, and intervention settings in real time.</p>
         </div>
         <!-- Card 3 -->
         <div class="stat-card">
-          <h2>100+</h2>
-          <h3>Experts in their respective domains</h3>
-          <p>Our domain experts actively contribute through research, algorithmic modeling, and publication.</p>
+          <h2>Real-Time Visualization</h2>
+          <h3>Dynamic chart output</h3>
+          <p>Visualizes allele frequency and inbreeding coefficient trajectories generation by generation.</p>
+        </div>
+        <!-- Card 4 -->
+        <div class="stat-card">
+          <h2>Conservation Genetics</h2>
+          <h3>Learning-focused context</h3>
+          <p>Supports understanding of risk trends and genetic management concepts.</p>
         </div>
       </div>
     </div>
@@ -397,16 +444,16 @@
         <!-- Social / Community Data -->
         <div class="social-stats">
           <div>
-            <div class="s-stat-num" style="color: var(--accent);">12k+</div>
-            <div class="s-stat-lbl">Simulations Run</div>
+            <div class="s-stat-num" style="color: var(--accent);">Model Scope</div>
+            <div class="s-stat-lbl">Genetic Drift</div>
           </div>
           <div>
-            <div class="s-stat-num" style="color: var(--accent-green);">500+</div>
-            <div class="s-stat-lbl">Conservationists</div>
+            <div class="s-stat-num" style="color: var(--accent-green);">Risk Focus</div>
+            <div class="s-stat-lbl">Inbreeding (F)</div>
           </div>
           <div>
-            <div class="s-stat-num" style="color: var(--accent-orange);">99.9%</div>
-            <div class="s-stat-lbl">Predictive Uptime</div>
+            <div class="s-stat-num" style="color: var(--accent-orange);">Use Case</div>
+            <div class="s-stat-lbl">Education</div>
           </div>
         </div>
       </div>
@@ -416,41 +463,41 @@
         
         <details open>
           <summary>
-            What does your platform offer? 
+            What does this application simulate?
             <span class="icon-plus">+</span>
           </summary>
           <div class="faq-content">
-            We provide advanced tools spanning genetic drift simulation, precision diagnostics, and inbreeding risk modeling. Our goal is to revolutionize conservation by advancing analytics, ultimately preserving population viability.
+            It simulates allele-frequency dynamics with a Wright–Fisher-style model, including mutation, selection, drift, and optional migration intervention.
           </div>
         </details>
 
         <details>
           <summary>
-            How do you ensure data quality and safety?
+            Is this a production conservation analytics platform?
             <span class="icon-plus">+</span>
           </summary>
           <div class="faq-content">
-            All genetic datasets are processed using state-of-the-art encryption protocols. Our stochastic simulation algorithms undergo rigorous peer review and validation against historical fossil and genomic records.
+            No. This is a student portfolio project focused on learning and visualization. It is not presented as a deployed decision-support system.
           </div>
         </details>
 
         <details>
           <summary>
-            Are you navigating regulatory industry standards?
+            Does it analyze real genomic datasets?
             <span class="icon-plus">+</span>
           </summary>
           <div class="faq-content">
-            Yes, our estimators fully comply with international bioethics guidelines and data privacy regulations, ensuring secure and responsible use of genomic sequence data.
+            No. Outputs come from mathematical assumptions and stochastic sampling in the simulator, not from real genome sequencing data.
           </div>
         </details>
 
         <details>
           <summary>
-            Who are you collaborating with?
+            What can users learn here?
             <span class="icon-plus">+</span>
           </summary>
           <div class="faq-content">
-            We partner with leading universities, conservation agencies, and paleogenetics laboratories worldwide to continuously refine our behavioral and environmental predictors.
+            Users can explore how population size, mutation rate, selection pressure, and migration influence genetic drift and inbreeding trends over time.
           </div>
         </details>
 
@@ -458,6 +505,29 @@
     </div>
 
   </main>
+
+  <section class="info-section">
+    <div class="info-card">
+      <h2>Scientific Concepts Demonstrated</h2>
+      <ul class="info-list">
+        <li>Genetic Drift</li>
+        <li>Allele Frequency Dynamics</li>
+        <li>Inbreeding Coefficient (F)</li>
+        <li>Population Genetics</li>
+        <li>Conservation Biology</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="limitations">
+    <div class="info-card">
+      <h2>Project Limitations</h2>
+      <p>This is an educational simulation tool.</p>
+      <p>It does not analyze real genomic datasets.</p>
+      <p>Results are based on mathematical models and assumptions.</p>
+      <p>It is intended for learning and visualization purposes.</p>
+    </div>
+  </section>
 
   <!-- Scripts -->
   <script>
