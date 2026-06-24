@@ -1,4 +1,7 @@
-/* auth.js — login & signup logic for GenDiversity
+/* LEGACY/DEPRECATED: auth.js is kept for reference only.
+   Active authentication logic lives in simulator.html.
+
+   auth.js — login & signup logic for GenDiversity
    Users are stored in localStorage as:
    { "email@x.com": { name: "Jane", pass: btoa("password") } }
    NOTE: btoa is a simple encoding, NOT real encryption.
